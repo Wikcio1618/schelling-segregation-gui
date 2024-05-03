@@ -15,22 +15,24 @@ public class Society {
 	
 	// CONSTRUCTORS	
 	public Society() {
-		this.initSociety();
+		initSociety();
 	}
 	
 	// METHODS
 	
 	public void initSociety() {
 		fields = new int[size][size];
+		agents.clear();
 
         // Calculate the number of empty cells
         int numAgentsOfKind = (int) ((1-fracVacant) / 2 * size * size);
-        
+
         int counter = 0;
         while (counter < numAgentsOfKind) {
         	int row = random.nextInt(size);
             int col = random.nextInt(size);
             if (fields[row][col] == 0) {
+            	agents.add(new Agent(col, row, -1));
             	fields[row][col] = -1;
             	counter++;
             }
@@ -40,10 +42,16 @@ public class Society {
         	int row = random.nextInt(size);
             int col = random.nextInt(size);
             if (fields[row][col] == 0) {
+            	agents.add(new Agent(col, row, 1));
             	fields[row][col] = 1;
             	counter++;
             }
         }
+        
+        for (int i = 0; i < size; i++) 
+			for (int j = 0; j < size; j++) 
+				if (fields[i][j] == 0)
+					agents.add(new Agent(j, i, 0));
 	}
 	
 	public void nextDay() {
@@ -55,6 +63,7 @@ public class Society {
 				agent = temp_agent;
 		}
 		
+		
 		if (!agent.checkHood(agent.getXpos(), agent.getYpos(), fields, size, tolerance, neiSize)) {
 			Agent newPlace = null;
 			while (newPlace == null) {
@@ -63,10 +72,15 @@ public class Society {
 				if (temp_place.getType() == 0 && agent.checkHood(temp_place.getXpos(), temp_place.getYpos(), fields, size, tolerance, neiSize))
 					agent = temp_place;
 			}
+			
+			int _xAgent = agent.getXpos();
+			int _yAgent = agent.getYpos();
+			System.out.println(_xAgent);
+			System.out.println(_yAgent);
 			agent.move(newPlace.getXpos(), newPlace.getYpos());
-			fields[agent.getXpos()][agent.getXpos()] = 0;
-			newPlace.move(agent.getXpos(), agent.getYpos());;
-			fields[newPlace.getXpos()][newPlace.getYpos()] = agent.getType();			
+			fields[newPlace.getYpos()][newPlace.getXpos()] = agent.getType();
+			newPlace.move(_xAgent, _yAgent);
+			fields[_yAgent][_xAgent] = 0;		
 		}
 			
 	}

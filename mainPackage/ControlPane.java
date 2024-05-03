@@ -5,9 +5,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
@@ -21,7 +23,9 @@ public class ControlPane extends JPanel {
 	private final JButton startButton, stopButton, resetButton, manualButton;
 	private final JPanel speedPanel, tolerancePanel, vacantPanel, mainButtonsPanel, sizePanel, manualPanel;
 	private final JLabel speedLabel, toleranceLabel, vacantLabel, sizeLabel, toleranceValueLabel, vacantValueLabel;
-	private final JSlider speedSlider, toleranceSlider, vacantSlider, sizeSlider;
+	private final JSlider speedSlider, toleranceSlider, vacantSlider;
+	private final JRadioButton sizeButton1, sizeButton2, sizeButton3;
+	private final ButtonGroup radioGroup;
 	
 	public ControlPane(Society soc, GraphicFrame owner) {
 		super();
@@ -66,7 +70,6 @@ public class ControlPane extends JPanel {
 		speedSlider = new JSlider(1, 4, 1);
 		toleranceSlider = new JSlider(0, 100, (int)(soc.getTolerance() * 100));
 		vacantSlider = new JSlider(5, 90, (int)(soc.getFracVacant() * 100));
-		sizeSlider = new JSlider(100, 300, soc.getSize());
 		
 		speedSlider.setMajorTickSpacing(1);
 		speedSlider.setPaintLabels(true);
@@ -78,9 +81,15 @@ public class ControlPane extends JPanel {
 //		vacantSlider.setMajorTickSpacing(5);
 //		vacantSlider.setPaintLabels(true);
 		
-		sizeSlider.setMajorTickSpacing(100);
-		sizeSlider.setPaintLabels(true);
-		sizeSlider.setSnapToTicks(true);
+		sizeButton1 = new JRadioButton("100");
+		sizeButton2 = new JRadioButton("200");
+		sizeButton2.setSelected(true);
+		sizeButton3 = new JRadioButton("300");
+		
+		radioGroup = new ButtonGroup();
+		radioGroup.add(sizeButton1);
+		radioGroup.add(sizeButton2);
+		radioGroup.add(sizeButton3);
 		
 		GridLayout gLay = new GridLayout(1, 3, 5, 5);
 		mainButtonsPanel.setLayout(gLay);
@@ -92,9 +101,11 @@ public class ControlPane extends JPanel {
 		speedPanel.add(speedLabel);
 		speedPanel.add(speedSlider);
 	
-		sizePanel.setLayout(new GridLayout(3, 1));
+		sizePanel.setLayout(new GridLayout(4, 1));
 		sizePanel.add(sizeLabel);
-		sizePanel.add(sizeSlider);
+		sizePanel.add(sizeButton1);
+		sizePanel.add(sizeButton2);
+		sizePanel.add(sizeButton3);
 		
 		tolerancePanel.setLayout(new GridLayout(3, 1));
 		tolerancePanel.add(toleranceLabel);
@@ -120,19 +131,22 @@ public class ControlPane extends JPanel {
 		this.add(manualPanel);
 		
 		startButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
+				owner.setRunning(true);
+				stopButton.setEnabled(true);
+				startButton.setEnabled(false);
+				changesAvailable(false);
 			}
 		});
 
 		stopButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				owner.setRunning(false);
+				stopButton.setEnabled(false);
+				startButton.setEnabled(true);
+				changesAvailable(true);
 			}
 				
 		});
@@ -149,7 +163,7 @@ public class ControlPane extends JPanel {
 		speedSlider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-//				gameSpeed = gameSpeedSlider.getValue();
+				owner.setGameSpeed(speedSlider.getValue());
 			}
 		});
 		
@@ -171,13 +185,40 @@ public class ControlPane extends JPanel {
 			}
 		});
 		
-		sizeSlider.addChangeListener(new ChangeListener() {
+		sizeButton1.addActionListener(new ActionListener() {
 			@Override
-			public void stateChanged(ChangeEvent e) {
-				int value = sizeSlider.getValue();
+			public void actionPerformed(ActionEvent e) {
+				int value = 10;
 				soc.setSize(value);
 			}
 		});
+		
+		sizeButton2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int value = 200;
+				soc.setSize(value);
+			}
+		});
+		
+		sizeButton3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int value = 300;
+				soc.setSize(value);
+			}
+		});
+		
+	}
+	
+	public void changesAvailable(boolean b) {
+		toleranceSlider.setEnabled(b);
+		vacantSlider.setEnabled(b);
+		sizeButton1.setEnabled(b);
+		sizeButton2.setEnabled(b);
+		sizeButton3.setEnabled(b);
+		speedSlider.setEnabled(b);
+		resetButton.setEnabled(b);
 	}
 
 
