@@ -20,7 +20,7 @@ public class ControlPane extends JPanel {
 	
 	private Society soc;
 	private GraphicFrame owner;
-	private final JButton startButton, stopButton, resetButton, manualButton;
+	private final JButton stepButton, startButton, stopButton, resetButton, manualButton;
 	private final JPanel speedPanel, tolerancePanel, vacantPanel, mainButtonsPanel, sizePanel, manualPanel;
 	private final JLabel speedLabel, toleranceLabel, vacantLabel, sizeLabel, toleranceValueLabel, vacantValueLabel;
 	private final JSlider speedSlider, toleranceSlider, vacantSlider;
@@ -56,8 +56,10 @@ public class ControlPane extends JPanel {
 //		manualPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 //		
 		manualButton = new JButton("Manual");
+		stepButton = new JButton("Step");
 		startButton = new JButton("Start");
 		stopButton = new JButton("Stop");
+		stopButton.setEnabled(false);
 		resetButton = new JButton("Reset");
 		
 		speedLabel = new JLabel("Simualtion speed", SwingConstants.CENTER);
@@ -81,18 +83,19 @@ public class ControlPane extends JPanel {
 //		vacantSlider.setMajorTickSpacing(5);
 //		vacantSlider.setPaintLabels(true);
 		
-		sizeButton1 = new JRadioButton("100");
-		sizeButton2 = new JRadioButton("200");
+		sizeButton1 = new JRadioButton("30");
+		sizeButton2 = new JRadioButton("100");
 		sizeButton2.setSelected(true);
-		sizeButton3 = new JRadioButton("300");
+		sizeButton3 = new JRadioButton("200");
 		
 		radioGroup = new ButtonGroup();
 		radioGroup.add(sizeButton1);
 		radioGroup.add(sizeButton2);
 		radioGroup.add(sizeButton3);
 		
-		GridLayout gLay = new GridLayout(1, 3, 5, 5);
+		GridLayout gLay = new GridLayout(2, 2, 10, 5);
 		mainButtonsPanel.setLayout(gLay);
+		mainButtonsPanel.add(stepButton);
 		mainButtonsPanel.add(startButton);
 		mainButtonsPanel.add(stopButton);
 		mainButtonsPanel.add(resetButton);
@@ -130,10 +133,19 @@ public class ControlPane extends JPanel {
 		this.add(new JSeparator());
 		this.add(manualPanel);
 		
+		stepButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				soc.nextDay();
+				owner.repaintAgentsPane();
+			}
+		});
+		
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				owner.setRunning(true);
+				owner.repaintAgentsPane();
 				stopButton.setEnabled(true);
 				startButton.setEnabled(false);
 				changesAvailable(false);
@@ -188,7 +200,7 @@ public class ControlPane extends JPanel {
 		sizeButton1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = 10;
+				int value = 30;
 				soc.setSize(value);
 			}
 		});
@@ -196,7 +208,7 @@ public class ControlPane extends JPanel {
 		sizeButton2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = 200;
+				int value = 100;
 				soc.setSize(value);
 			}
 		});
@@ -204,7 +216,7 @@ public class ControlPane extends JPanel {
 		sizeButton3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = 300;
+				int value = 200;
 				soc.setSize(value);
 			}
 		});
@@ -218,6 +230,7 @@ public class ControlPane extends JPanel {
 		sizeButton2.setEnabled(b);
 		sizeButton3.setEnabled(b);
 		speedSlider.setEnabled(b);
+		stepButton.setEnabled(b);
 		resetButton.setEnabled(b);
 	}
 

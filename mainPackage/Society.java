@@ -7,14 +7,20 @@ public class Society {
 	private static Random random = new Random();
 	private int[][] fields;
 	private ArrayList<Agent> agents = new ArrayList<Agent>();
-	private double tolerance = 0.8;
-	private double fracVacant = 0.2;
-	private int size = 200;
-	private int neiSize = 1;
+	private double tolerance = 0.2;
+	private double fracVacant = 0.3;
+	private int size = 100;
+	private final int neiSize = 1;
+	private GraphicFrame frame;
 	
 	
 	// CONSTRUCTORS	
 	public Society() {
+		initSociety();
+	}
+	
+	public Society(GraphicFrame frame) {
+		this.frame = frame;
 		initSociety();
 	}
 	
@@ -56,6 +62,7 @@ public class Society {
 	
 	public void nextDay() {
 		Agent agent = null;
+		counter = 0;
 		while (agent == null) {
 			int rand_idx = random.nextInt(agents.size());
 			Agent temp_agent = agents.get(rand_idx);
@@ -63,24 +70,33 @@ public class Society {
 				agent = temp_agent;
 		}
 		
-		
+		int limit = size^2;
 		if (!agent.checkHood(agent.getXpos(), agent.getYpos(), fields, size, tolerance, neiSize)) {
 			Agent newPlace = null;
+			int counter = 0;
 			while (newPlace == null) {
+				counter++;
+				if (counter > limit) {
+					if (frame != null)
+						frame.setRunning(false);
+					System.out.println("New place limit reached");
+					break;
+				}
 				int rand_idx = random.nextInt(agents.size());
 				Agent temp_place = agents.get(rand_idx);
-				if (temp_place.getType() == 0 && agent.checkHood(temp_place.getXpos(), temp_place.getYpos(), fields, size, tolerance, neiSize))
-					agent = temp_place;
+				if (temp_place.getType() == 0 
+						 /* && agent.checkHood(temp_place.getXpos(), temp_place.getYpos(), fields, size, tolerance, neiSize) */)
+					newPlace = temp_place;
 			}
 			
+			if (agent != null && newPlace != null) {
 			int _xAgent = agent.getXpos();
 			int _yAgent = agent.getYpos();
-			System.out.println(_xAgent);
-			System.out.println(_yAgent);
 			agent.move(newPlace.getXpos(), newPlace.getYpos());
 			fields[newPlace.getYpos()][newPlace.getXpos()] = agent.getType();
 			newPlace.move(_xAgent, _yAgent);
 			fields[_yAgent][_xAgent] = 0;		
+			}
 		}
 			
 	}

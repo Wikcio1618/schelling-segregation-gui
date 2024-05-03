@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 public class GraphicFrame extends JFrame {
 	private static final long serialVersionUID = -6342936101847016682L;
-	private Society soc = new Society();
+	private Society soc = new Society(this);
 	private AgentsPane agentsPane = new AgentsPane(soc);
 	private ControlPane controlPane = new ControlPane(soc, this);
 	

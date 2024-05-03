@@ -38,7 +38,7 @@ public class Agent {
 		if (sum_all == 0)
 			decision = true;
 		else
-			decision = sum_same / sum_all < tolerance;
+			decision = (double) sum_same / sum_all < tolerance;
 		
 		return decision;
 	}
