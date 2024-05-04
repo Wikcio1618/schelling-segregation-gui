@@ -34,7 +34,7 @@ public class AgentsPane extends JPanel {
 				if (fields[i][j] == 1)
 					g.setColor(new Color(204, 102, 0));
 				else if (fields[i][j] == -1)
-					g.setColor(new Color(0, 0, 102));
+					g.setColor(new Color(51, 255, 255));
 				else
 					g.setColor(new Color(5, 0, 5));
 				g.fillRect(5 + j * rectSize, 5 + i * rectSize, rectSize, rectSize);

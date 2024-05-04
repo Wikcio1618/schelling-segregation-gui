@@ -216,7 +216,7 @@ public class ControlPane extends JPanel {
 		sizeButton3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = 200;
+				int value = 20;
 				soc.setSize(value);
 			}
 		});

@@ -45,7 +45,7 @@ public class GraphicFrame extends JFrame {
 				}
 				
 			}
-		}, 1000, 25);
+		}, 1000, 5);
 	}
 	
 	public void repaintAgentsPane() {
