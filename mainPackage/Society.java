@@ -8,7 +8,7 @@ public class Society {
 	private int[][] fields;
 	private double tolerance = 0.2;
 	private double fracVacant = 0.3;
-	private int size = 100;
+	private int size = 60;
 	private final int neiSize = 3;
 	private GraphicFrame frame;
 	private int loopsLimit = size^2*100000;
@@ -68,9 +68,9 @@ public class Society {
 				break;
 			}
 			if (counter > loopsLimit) {
-				System.out.println("Agent limit reached");
-				frame.setRunning(false);
-				return;
+//				System.out.println("Agent limit reached");
+//				frame.setRunning(false);
+//				return;
 			}	
 		}
 		
@@ -90,7 +90,7 @@ public class Society {
 					break;
 				}
 				if (counter > loopsLimit) {
-					System.out.println("New place limit reached");
+//					System.out.println("New place limit reached");
 //					frame.setRunning(false);
 //					return;
 				}	
@@ -105,8 +105,8 @@ public class Society {
 	}
 	
 	private boolean checkHood(int xPos, int yPos, int type) {
-		System.out.println("-------------");
-		System.out.println("Checking positions x: " + xPos + " y: " + yPos);
+//		System.out.println("-------------");
+//		System.out.println("Checking positions x: " + xPos + " y: " + yPos);
 		int x1_nei = xPos - neiSize > 0 ? xPos - neiSize : 0;
 		int x2_nei = xPos + neiSize < size ? xPos + neiSize : size-1;
 		int y1_nei = yPos - neiSize > 0 ? yPos - neiSize : 0;
@@ -131,43 +131,10 @@ public class Society {
 		else
 			decision = (double) sum_same / sum_all > tolerance;
 		
-		System.out.println("same: " + sum_same + " all: " + sum_all + " result: " + (double) sum_same / sum_all + " " + decision);
+//		System.out.println("same: " + sum_same + " all: " + sum_all + " result: " + (double) sum_same / sum_all + " " + decision);
 		return decision;
 	}
 	
-//	public void nextDays() {
-//		
-//		
-//		int limit = size^2;
-//		if (!agent.checkHood(agent.getXpos(), agent.getYpos(), fields, size, tolerance, neiSize)) {
-//			Agent newPlace = null;
-//			int counter = 0;
-//			while (newPlace == null) {
-//				counter++;
-//				if (counter > limit) {
-//					if (frame != null)
-//						frame.setRunning(false);
-//					System.out.println("New place limit reached");
-//					break;
-//				}
-//				int rand_idx = random.nextInt(agents.size());
-//				Agent temp_place = agents.get(rand_idx);
-//				if (temp_place.getType() == 0 
-//						 /* && agent.checkHood(temp_place.getXpos(), temp_place.getYpos(), fields, size, tolerance, neiSize) */)
-//					newPlace = temp_place;
-//			}
-//			
-//			if (agent != null && newPlace != null) {
-//			int _xAgent = agent.getXpos();
-//			int _yAgent = agent.getYpos();
-//			agent.move(newPlace.getXpos(), newPlace.getYpos());
-//			fields[newPlace.getYpos()][newPlace.getXpos()] = agent.getType();
-//			newPlace.move(_xAgent, _yAgent);
-//			fields[_yAgent][_xAgent] = 0;		
-//			}
-//		}
-//			
-//	}
 	
 	public int[][] getFields() {
 		return fields;

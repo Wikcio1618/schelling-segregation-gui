@@ -1,5 +1,6 @@
 package mainPackage;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -8,11 +9,13 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -34,7 +37,6 @@ public class ControlPane extends JPanel {
 		
 		this.setPreferredSize(new Dimension(270, 760));
 		this.setLayout(new GridLayout(10,1));
-//		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		
 		speedPanel = new JPanel();
 		tolerancePanel = new JPanel();
@@ -62,9 +64,9 @@ public class ControlPane extends JPanel {
 		stopButton.setEnabled(false);
 		resetButton = new JButton("Reset");
 		
-		speedLabel = new JLabel("Simualtion speed", SwingConstants.CENTER);
-		toleranceLabel = new JLabel("Tolerance", SwingConstants.CENTER);
-		vacantLabel = new JLabel("Fraction of vacant", SwingConstants.CENTER);
+		speedLabel = new JLabel("Simualtion Speed", SwingConstants.CENTER);
+		toleranceLabel = new JLabel("Satisfaction Demand", SwingConstants.CENTER);
+		vacantLabel = new JLabel("Fraction of Vacant", SwingConstants.CENTER);
 		sizeLabel = new JLabel("Society Size", SwingConstants.CENTER);
 		toleranceValueLabel = new JLabel(String.format("%.2f", soc.getTolerance()), SwingConstants.CENTER);
 		vacantValueLabel = new JLabel(String.format("%.2f", soc.getFracVacant()), SwingConstants.CENTER);
@@ -84,9 +86,9 @@ public class ControlPane extends JPanel {
 //		vacantSlider.setPaintLabels(true);
 		
 		sizeButton1 = new JRadioButton("30");
-		sizeButton2 = new JRadioButton("100");
+		sizeButton2 = new JRadioButton("60");
 		sizeButton2.setSelected(true);
-		sizeButton3 = new JRadioButton("200");
+		sizeButton3 = new JRadioButton("100");
 		
 		radioGroup = new ButtonGroup();
 		radioGroup.add(sizeButton1);
@@ -208,7 +210,7 @@ public class ControlPane extends JPanel {
 		sizeButton2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = 100;
+				int value = 60;
 				soc.setSize(value);
 			}
 		});
@@ -216,8 +218,27 @@ public class ControlPane extends JPanel {
 		sizeButton3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = 20;
+				int value = 100;
 				soc.setSize(value);
+			}
+		});
+		
+		manualButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Manual\n"
+						+ "The program impements the famous Schelling's segregation model in its basic form.\n"
+						+ "There are 2 types of agents, who assume different positions on a square grid. Some places on the grid are vacant\n"
+						+ "The number of agents of each type is the same \n\n"
+						+ "The program allows to control some parameters of the model:\n"
+						+ "- Satisfaction demand is a number between 0 and 1. If the fraction of similar, neighbouring (8 nearest) agents\n"
+						+ "is less that this parameter, the agent will relocate randomly to a vacant place\n"
+						+ "- The fraction of vacant places\n"
+						+ "- Size of the grid as number of rows and columns\n\n"
+						+ "The user can run the asynchronous simulation, stop it, reset the agents positions or move the evolution by a single step\n\n"
+						+ "The author of this program is Wiktor C., who created it as part of Politechnika Warszawska - Sociophysics classess\n"
+						+ "The source code can be found on github.com/Wikcio1618 as of may 2024",
+						"Manual", JOptionPane.DEFAULT_OPTION);
 			}
 		});
 		
