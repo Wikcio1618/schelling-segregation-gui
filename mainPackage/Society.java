@@ -8,10 +8,12 @@ public class Society {
 	private int[][] fields;
 	private double tolerance = 0.2;
 	private double fracVacant = 0.3;
-	private int size = 60;
+	private int size = 50;
 	private final int neiSize = 3;
+	private int day;
+	
 	private GraphicFrame frame;
-	private int loopsLimit = size^2*100000;
+	private int _loopsLimit = size^2*100000;
 	
 	
 	// CONSTRUCTORS	
@@ -27,7 +29,8 @@ public class Society {
 	// METHODS
 	
 	public void initSociety() {
-		loopsLimit = size^2;
+		day = 0;
+		_loopsLimit = size^2;
 		fields = new int[size][size];
 
         // Calculate the number of empty cells
@@ -54,6 +57,7 @@ public class Society {
 	}
 	
 	public void nextDay() {
+		day++;
 		int xAgent, yAgent;
 		
 //		choose agent for consideration
@@ -67,7 +71,7 @@ public class Society {
 				yAgent = row;
 				break;
 			}
-			if (counter > loopsLimit) {
+			if (counter > _loopsLimit) {
 //				System.out.println("Agent limit reached");
 //				frame.setRunning(false);
 //				return;
@@ -89,7 +93,7 @@ public class Society {
 					yPlace = row;
 					break;
 				}
-				if (counter > loopsLimit) {
+				if (counter > _loopsLimit) {
 //					System.out.println("New place limit reached");
 //					frame.setRunning(false);
 //					return;
@@ -135,6 +139,31 @@ public class Society {
 		return decision;
 	}
 	
+//	Returns number of different neighbourhoods divided by number of all neighbourhoods
+	public double getNeighbourhoodLikeness() {
+		int all = 0;
+		int nSame = 0;
+		
+		for (int i = 0; i < size-1; i++)
+			for (int j = 0; j < size-1; j++) {
+				int _down = fields[i][j] * fields[i+1][j];
+				int _right = fields[i][j] * fields[i][j+1];
+				int _diag = fields[i][j] * fields[i+1][j+1];
+				
+				all += Math.abs(_down);
+				all += Math.abs(_right);
+				all += Math.abs(_diag);
+				
+				nSame += (_down + 1) / 2;
+				nSame += (_right + 1) / 2;
+				nSame += (_diag + 1) / 2;
+			}
+		
+		double neighbourhoodDifference = (double) nSame / all;
+		
+		return neighbourhoodDifference;
+	}
+	
 	
 	public int[][] getFields() {
 		return fields;
@@ -162,5 +191,9 @@ public class Society {
 
 	public void setFracVacant(double fracVacant) {
 		this.fracVacant = fracVacant;
+	}
+
+	public int getDay() {
+		return day;
 	}
 }

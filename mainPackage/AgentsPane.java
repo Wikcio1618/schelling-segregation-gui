@@ -1,5 +1,6 @@
 package mainPackage;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,9 +16,10 @@ public class AgentsPane extends JPanel {
 		super();
 		this.soc = soc;
 		
-		this.setPreferredSize(new Dimension(900-290, 760));
+		this.setPreferredSize(new Dimension(900-270, 600));
+		this.setBounds(0, 0, 900-270, 600);
+		
 //		this.setBackground(Color.BLACK);
-//		this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		
 	}
 	
@@ -29,7 +31,9 @@ public class AgentsPane extends JPanel {
 	}
 	
 	public void drawAgents(Graphics g) {
-		int gridSize = 600;
+		int gridSize = 500;
+		int rightMargin = 40;
+		int upMargin = 30;
 		int[][] fields = soc.getFields();
 		int rectSize = (int) (gridSize / soc.getSize());
 		for (int i = 0; i < soc.getSize(); i++)
@@ -40,13 +44,13 @@ public class AgentsPane extends JPanel {
 					g.setColor(new Color(210,105,30));
 				else
 					g.setColor(new Color(245,245,245));
-				g.fillRect(5 + j * rectSize, 5 + i * rectSize, rectSize, rectSize);
+				g.fillRect(rightMargin + j * rectSize, upMargin + i * rectSize, rectSize, rectSize);
 			}
 		
 		g.setColor(Color.black);
 		for (int i = 0; i <= soc.getSize(); i++) {
-			g.drawLine(5, 5+i*rectSize, 5+gridSize, 5+i*rectSize);
-			g.drawLine(5+i*rectSize, 5, 5+i*rectSize, 5+gridSize);
+			g.drawLine(rightMargin, upMargin+i*rectSize, rightMargin+gridSize, upMargin+i*rectSize);
+			g.drawLine(rightMargin+i*rectSize, upMargin, rightMargin+i*rectSize, upMargin+gridSize);
 		}
 	}
 

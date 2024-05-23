@@ -23,7 +23,7 @@ public class ControlPane extends JPanel {
 	
 	private Society soc;
 	private GraphicFrame owner;
-	private final JButton stepButton, startButton, stopButton, resetButton, manualButton;
+	private final JButton clearButton, startButton, stopButton, resetButton, manualButton;
 	private final JPanel speedPanel, tolerancePanel, vacantPanel, mainButtonsPanel, sizePanel, manualPanel;
 	private final JLabel speedLabel, toleranceLabel, vacantLabel, sizeLabel, toleranceValueLabel, vacantValueLabel;
 	private final JSlider speedSlider, toleranceSlider, vacantSlider;
@@ -46,10 +46,10 @@ public class ControlPane extends JPanel {
 		manualPanel = new JPanel();
 		
 		mainButtonsPanel.setPreferredSize(new Dimension(100, 10));
-		sizePanel.setPreferredSize(new Dimension(400, 20));
-		tolerancePanel.setPreferredSize(new Dimension(400, 20));
-		vacantPanel.setPreferredSize(new Dimension(400, 20));
-		manualPanel.setPreferredSize(new Dimension(400, 20));
+		sizePanel.setPreferredSize(new Dimension(270, 20));
+		tolerancePanel.setPreferredSize(new Dimension(270, 20));
+		vacantPanel.setPreferredSize(new Dimension(270, 20));
+		manualPanel.setPreferredSize(new Dimension(270, 20));
 		
 //		mainButtonsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 //		sizePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -58,7 +58,7 @@ public class ControlPane extends JPanel {
 //		manualPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 //		
 		manualButton = new JButton("Manual");
-		stepButton = new JButton("Step");
+		clearButton = new JButton("Clear Plot");
 		startButton = new JButton("Start");
 		stopButton = new JButton("Stop");
 		stopButton.setEnabled(false);
@@ -85,8 +85,8 @@ public class ControlPane extends JPanel {
 //		vacantSlider.setMajorTickSpacing(5);
 //		vacantSlider.setPaintLabels(true);
 		
-		sizeButton1 = new JRadioButton("30");
-		sizeButton2 = new JRadioButton("60");
+		sizeButton1 = new JRadioButton("20");
+		sizeButton2 = new JRadioButton("50");
 		sizeButton2.setSelected(true);
 		sizeButton3 = new JRadioButton("100");
 		
@@ -97,7 +97,7 @@ public class ControlPane extends JPanel {
 		
 		GridLayout gLay = new GridLayout(2, 2, 10, 5);
 		mainButtonsPanel.setLayout(gLay);
-		mainButtonsPanel.add(stepButton);
+		mainButtonsPanel.add(clearButton);
 		mainButtonsPanel.add(startButton);
 		mainButtonsPanel.add(stopButton);
 		mainButtonsPanel.add(resetButton);
@@ -135,11 +135,10 @@ public class ControlPane extends JPanel {
 		this.add(new JSeparator());
 		this.add(manualPanel);
 		
-		stepButton.addActionListener(new ActionListener() {
+		clearButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				soc.nextDay();
-				owner.repaintAgentsPane();
+				owner.getChartPane().clearPlots();
 			}
 		});
 		
@@ -171,6 +170,7 @@ public class ControlPane extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				soc.initSociety();
 				owner.repaintAgentsPane();
+				owner.getChartPane().addNewSeries(soc.getTolerance());
 			}
 		});
 		
@@ -202,7 +202,7 @@ public class ControlPane extends JPanel {
 		sizeButton1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = 30;
+				int value = 25;
 				soc.setSize(value);
 			}
 		});
@@ -210,7 +210,7 @@ public class ControlPane extends JPanel {
 		sizeButton2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = 60;
+				int value = 50;
 				soc.setSize(value);
 			}
 		});
@@ -251,7 +251,7 @@ public class ControlPane extends JPanel {
 		sizeButton2.setEnabled(b);
 		sizeButton3.setEnabled(b);
 		speedSlider.setEnabled(b);
-		stepButton.setEnabled(b);
+		clearButton.setEnabled(b);
 		resetButton.setEnabled(b);
 	}
 
