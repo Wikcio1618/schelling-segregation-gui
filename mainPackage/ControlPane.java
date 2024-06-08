@@ -235,9 +235,12 @@ public class ControlPane extends JPanel {
 						+ "is less that this parameter, the agent will relocate randomly to a vacant place\n"
 						+ "- The fraction of vacant places\n"
 						+ "- Size of the grid as number of rows and columns\n\n"
-						+ "The user can run the asynchronous simulation, stop it, reset the agents positions or move the evolution by a single step\n\n"
+						+ "The user can run the asynchronous simulation, stop it or reset the agents positions\n\n"
+						+ "The plot below the grid shows time evolution of average satisfaction measured as same neighbourhoods divided by all neighbourhoods\n\n"
+						+ "To observe the phase transition one can run the simulation for 0.3 and 0.4 satisfaction demand and observe satisfaction changes\n"
+						+ "as well as visually observe cliques created. Indeed, Shelling Model is said to have a critcal parameter equal to about 0.33\n\n"
 						+ "The author of this program is Wiktor C., who created it as part of Politechnika Warszawska - Sociophysics classess\n"
-						+ "The source code can be found on github.com/Wikcio1618 as of may 2024",
+						+ "The source code can be found on github.com/Wikcio1618 as of June 2024",
 						"Manual", JOptionPane.DEFAULT_OPTION);
 			}
 		});
